@@ -20,14 +20,44 @@
     </template>
 
     <template v-slot:append>
-<!--      TODO: Nutzerprofilbild Komponente-->
         <label class="cc-amount">
           700 CC
         </label>
-        <img
-            src="src/assets/icons/capy-logo-transparent.png"
-            class="user-profile"
-        />
+
+      <div class="text-center">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <img
+                src="src/assets/icons/capy-logo-transparent.png"
+                class="user-pic"
+                v-bind="props"
+                alt="Profilbild"/>
+          </template>
+
+          <v-list>
+            <v-list-item>
+              <v-list-item-title>
+                <p>Inventar</p>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <p>Markt</p>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <p>Anfragen</p>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <p>Profil</p>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
 
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -56,13 +86,6 @@
   width: 100px;
 }
 
-.user-profile {
-  height: 50px;
-  width: 50px;
-  border: 1px solid black;
-  margin-left: 25px;
-}
-
 .logout {
   margin-left: 140px;
   margin-right: 20px;
@@ -70,5 +93,16 @@
 
 .cc-amount {
   font-weight: bold;
+}
+
+.user-pic {
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+  margin-left: 25px;
+}
+
+.v-list-item {
+  cursor: pointer;
 }
 </style>
