@@ -102,8 +102,8 @@ a > .v-list-item {
 }
 
 .logo {
-  height: 100px;
-  width: 100px;
+  height: 50px;
+  width: 50px;
 }
 
 .logout {

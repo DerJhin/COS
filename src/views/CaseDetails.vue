@@ -16,10 +16,16 @@ export default {
 </script>
 
 <template>
-  <OpenCase :case-name="this.caseName" />
-  <CaseItems :case-name="this.caseName"/>
+  <div class="openCase align-center">
+    <OpenCase :case-name="this.caseName" />
+    <CaseItems :case-name="this.caseName"/>
+  </div>
 </template>
 
 <style scoped>
-
+.openCase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 </style>

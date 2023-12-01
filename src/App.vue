@@ -5,13 +5,15 @@ import Header from "@/components/Header.vue";
 
 <template>
   <v-layout>
-    <Header></Header>
-
-    <v-main class="align-center justify-center">
+    <Header/>
+    <div class="d-flex text-center content">
       <router-view />
-    </v-main>
+    </div>
   </v-layout>
 </template>
 
 <style scoped>
+.content {
+  margin-top: 85px;
+}
 </style>

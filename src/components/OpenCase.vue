@@ -31,18 +31,24 @@ export default {
 </script>
 
 <template>
-  <v-row>
+  <div>
     <h1>{{ caseName }}</h1>
     <img
         src="../../../icons/capy-logo-transparent.png"
         class="logo"
         alt="Case"/>
-  </v-row>
-  <v-row>
-    <v-btn @click="openCase()">Open Case</v-btn>
-  </v-row>
+  </div>
+  <div>
+    <v-btn @click="openCase()" class="open-case-button">Open Case</v-btn>
+  </div>
 </template>
 
 <style scoped>
+.open-case-button {
+  margin: 16px 0 16px 0;
+}
 
+h1 {
+  color: white;
+}
 </style>
