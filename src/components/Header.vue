@@ -7,7 +7,7 @@
     <template v-slot:prepend>
       <router-link to="/">
         <img
-            src="src/assets/icons/capy-logo-transparent.png"
+            src="../../public/icons/capy-logo-transparent.png"
             class="logo"
             alt="Logo"
         />
@@ -32,7 +32,7 @@
         <v-menu>
           <template v-slot:activator="{ props }">
             <img
-                src="src/assets/icons/capy-logo-transparent.png"
+                src="../../public/icons/capy-logo-transparent.png"
                 class="user-pic"
                 v-bind="props"
                 alt="Profilbild"/>

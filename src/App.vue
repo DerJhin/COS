@@ -4,17 +4,14 @@ import Header from "@/components/Header.vue";
 </script>
 
 <template>
-  <header>
-    <v-layout>
-      <Header></Header>
-    </v-layout>
-  </header>
+  <v-layout>
+    <Header></Header>
 
-  <main>
-    <router-view />
-  </main>
+    <v-main class="align-center justify-center">
+      <router-view />
+    </v-main>
+  </v-layout>
 </template>
 
 <style scoped>
-
 </style>
