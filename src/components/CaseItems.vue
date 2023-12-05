@@ -74,14 +74,13 @@ export default {
     //this.getCaseData()
   },
   computed: {
-    // Group the case items into chunks of 6
     groupedCaseItems() {
       const chunkSize = 6;
-      return this.chunkArray(this.caseItems, chunkSize);
+      return this.showCardsArray(this.caseItems, chunkSize);
     },
   },
   methods: {
-    chunkArray(array, size) {
+    showCardsArray(array, size) {
       const result = [];
       for (let i = 0; i < array.length; i += size) {
         result.push(array.slice(i, i + size));
@@ -103,7 +102,7 @@ export default {
 <template>
   <v-col>
     <v-row>
-      <v-col v-for="(item, index) in caseItems" :key="item.id">
+      <v-col v-for="(item) in caseItems" :key="item.id">
         <v-card :style="{ borderRight: '8px solid ' + item.rarity }">
           <img :src="item.image" :alt="item.id" height="150" />
         </v-card>
@@ -120,5 +119,9 @@ export default {
 
 .v-col {
   flex-grow: 0;
+}
+
+.v-row {
+  justify-content: center;
 }
 </style>

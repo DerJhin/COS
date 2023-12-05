@@ -6,19 +6,10 @@ export default {
   props: ['caseName'],
   data() {
     return {
-      openedSkin: null,
-      caseItem: null
+      openedSkin: null
     };
   },
   methods: {
-    async getCaseData() {
-      try {
-        this.caseItem = await CaseService.getCaseData(this.caseName);
-      } catch (error) {
-        console.error('Error fetching case data:', error);
-      }
-    },
-
     async openCase() {
       try {
         this.openedSkin = await CaseService.openCase(this.caseName);
