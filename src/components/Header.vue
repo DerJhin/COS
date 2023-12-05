@@ -1,5 +1,19 @@
 <script setup>
 
+const navigationNodes = [
+  {
+    link: '/inventory',
+    label: 'Inventar'
+  },
+  {
+    link: '/requests',
+    label: 'Anfragen'
+  },
+  {
+    link: '/profile',
+    label: 'Profil'
+  }
+]
 </script>
 
 <template>
@@ -7,7 +21,7 @@
     <template v-slot:prepend>
       <router-link to="/">
         <img
-            src="src/assets/icons/capy-logo-transparent.png"
+            src="../../public/icons/capy-logo-transparent.png"
             class="logo"
             alt="Logo"
         />
@@ -32,36 +46,18 @@
         <v-menu>
           <template v-slot:activator="{ props }">
             <img
-                src="src/assets/icons/capy-logo-transparent.png"
+                src="../../public/icons/capy-logo-transparent.png"
                 class="user-pic"
                 v-bind="props"
                 alt="Profilbild"/>
           </template>
 
           <v-list>
-            <router-link to="/inventory">
+            <router-link v-for="node in navigationNodes" :to="node.link">
               <v-list-item>
                 <v-list-item-title>
                   <p>
-                    Inventar
-                  </p>
-                </v-list-item-title>
-              </v-list-item>
-            </router-link>
-            <router-link to="/notifications">
-              <v-list-item>
-                <v-list-item-title>
-                  <p>
-                    Anfragen
-                  </p>
-                </v-list-item-title>
-              </v-list-item>
-            </router-link>
-            <router-link to="/profile">
-              <v-list-item>
-                <v-list-item-title>
-                  <p>
-                    Profil
+                    {{ node.label }}
                   </p>
                 </v-list-item-title>
               </v-list-item>
@@ -102,8 +98,8 @@ a > .v-list-item {
 }
 
 .logo {
-  height: 100px;
-  width: 100px;
+  height: 50px;
+  width: 50px;
 }
 
 .logout {
