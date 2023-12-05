@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 
 </script>
 
 <template>
-  <p>Inventar</p>
+  <p>Profil</p>
 </template>
 
 <style scoped>

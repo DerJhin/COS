@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 
 </script>
 
 <template>
-  <p>Profil</p>
+  <p>Home</p>
 </template>
 
 <style scoped>

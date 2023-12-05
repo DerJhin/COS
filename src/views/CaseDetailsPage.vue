@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import OpenCase from "@/components/OpenCase.vue";
 import CaseItems from "@/components/CaseItems.vue";
 
