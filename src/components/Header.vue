@@ -1,5 +1,19 @@
 <script setup>
 
+const navigationNodes = [
+  {
+    link: '/inventory',
+    label: 'Inventar'
+  },
+  {
+    link: '/requests',
+    label: 'Anfragen'
+  },
+  {
+    link: '/profile',
+    label: 'Profil'
+  }
+]
 </script>
 
 <template>
@@ -39,29 +53,11 @@
           </template>
 
           <v-list>
-            <router-link to="/inventory">
+            <router-link v-for="node in navigationNodes" :to="node.link">
               <v-list-item>
                 <v-list-item-title>
                   <p>
-                    Inventar
-                  </p>
-                </v-list-item-title>
-              </v-list-item>
-            </router-link>
-            <router-link to="/notifications">
-              <v-list-item>
-                <v-list-item-title>
-                  <p>
-                    Anfragen
-                  </p>
-                </v-list-item-title>
-              </v-list-item>
-            </router-link>
-            <router-link to="/profile">
-              <v-list-item>
-                <v-list-item-title>
-                  <p>
-                    Profil
+                    {{ node.label }}
                   </p>
                 </v-list-item-title>
               </v-list-item>
