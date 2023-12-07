@@ -93,4 +93,8 @@ export default {
   flex-grow: 0;
   padding: 6px;
 }
+
+.v-row {
+  justify-content: center;
+}
 </style>
