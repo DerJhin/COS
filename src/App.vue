@@ -16,4 +16,8 @@ import Header from "@/components/Header.vue";
 .content {
   margin-top: 85px;
 }
+
+.v-layout {
+  display: block;
+}
 </style>
