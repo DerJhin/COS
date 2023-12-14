@@ -27,7 +27,7 @@
         </v-form>
         <v-file-input label="Profilbild ändern" variant="outlined"></v-file-input>
         <v-btn variant="outlined" class="ueberschrift">
-          Änderungen Speicher
+          Änderungen Speichern
         </v-btn>
       </v-col>
     </v-row>
