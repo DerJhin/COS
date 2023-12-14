@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import FriendsMenu from "@/components/FriendsMenu.vue";
+
 const navigationNodes = [
   {
     link: '/inventory',
@@ -42,7 +44,7 @@ const navigationNodes = [
           700 CC
         </label>
 
-      <div class="text-center">
+      <div class="text-center profile-friends">
         <v-menu>
           <template v-slot:activator="{ props }">
             <img
@@ -64,6 +66,7 @@ const navigationNodes = [
             </router-link>
           </v-list>
         </v-menu>
+        <FriendsMenu/>
       </div>
 
         <svg
@@ -116,5 +119,10 @@ a > .v-list-item {
   width: 50px;
   border: 1px solid black;
   margin-left: 25px;
+}
+
+.profile-friends {
+  display: flex;
+  align-items: center;
 }
 </style>
