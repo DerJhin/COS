@@ -87,6 +87,7 @@ export default {
 .v-card {
   max-width: 160px;
   max-height: 150px;
+  background-color: transparent;
 }
 
 .v-col {
