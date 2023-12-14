@@ -1,7 +1,4 @@
 <script lang="ts">
-
-import {CaseService} from "@/services/case.service";
-
 export default {
   props: ['caseName'],
   data() {
@@ -69,20 +66,9 @@ export default {
         }
       ]
     }
-  },
-  mounted() {
-    //this.getCaseData()
-  },
-  methods: {
-    async getCaseData() {
-      try {
-        this.caseItems = await CaseService.getCaseData(this.caseName);
-      } catch (error) {
-        console.error('Error fetching case data:', error);
-      }
-    }
   }
 }
+
 </script>
 
 <template>

@@ -84,7 +84,7 @@ export default {
                   ></v-text-field>
                   <v-text-field
                       v-model="authData.passwordConfirmation"
-                      label="Passwort"
+                      label="Passwort erneut"
                       type="password"
                       :rules="[rules.required, rules.confirm]"
                   ></v-text-field>
