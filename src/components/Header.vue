@@ -40,9 +40,67 @@ const navigationNodes = [
     </template>
 
     <template v-slot:append>
-        <label class="cc-amount">
-          700 CC
-        </label>
+      
+      <v-dialog
+        transition="dialog-top-transition"
+        width="auto"
+      >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            class="color"
+            color="outlined"
+            v-bind="props"
+          >Daily Reward</v-btn>
+        </template>
+        <template v-slot:default="{ isActive }">
+          <v-card class="color">
+            <v-toolbar
+              color="outlined"
+              title="Daily Reward"
+            ></v-toolbar>
+            <v-card-text>
+              <div class="text-h2 pa-12">Du hast 5 CC bekommen</div>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn
+                variant="text"
+                @click="isActive.value = false"
+              >Close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
+
+      <v-dialog
+        transition="dialog-top-transition"
+        position="right"
+        width="auto"
+      >
+        <template v-slot:activator="{ props }" class="cc-amount">
+          <v-btn
+            class="color"
+            color="outlined"
+            v-bind="props"
+          >700 CC</v-btn>
+        </template>
+        <template v-slot:default="{ isActive }">
+          <v-card class="color">
+            <v-toolbar
+              color="outlined"
+              title="Add CC to Youre Account"
+            ></v-toolbar>
+            <v-card-text>
+              <div class="text-h2 pa-12">test data</div>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn
+                variant="text"
+                @click="isActive.value = false"
+              >Close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
 
       <div class="text-center profile-friends">
         <v-menu>
@@ -124,5 +182,9 @@ a > .v-list-item {
 .profile-friends {
   display: flex;
   align-items: center;
+}
+
+.color {
+    color: #ff317b;
 }
 </style>

@@ -10,14 +10,14 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col> 
+      <v-col class="centerContent"> 
         <img
           src="../../public/icons/capy-logo-transparent.png"
           class="user-pic"
           alt="Profilbild"/>
       </v-col>
-      <v-col class="test">
-        <p>Profil bearbeiten:</p>
+      <v-col class="abstand centerContent">
+        <p>Profil bearbeiten</p>
         <v-form>
           <v-text-field
             v-model="Anzeigename"
@@ -53,7 +53,16 @@
   .ueberschrift {
     color: #ff317b;
   }
-  .test {
+  .abstand {
     margin-top: 2em;
+  }
+  .centerContent {
+    max-width: 25%;
+  }
+  .v-row {
+    justify-content: center;
+  }
+  :deep(.v-input__prepend) {
+    margin-left: 1em !important;
   }
 </style>
