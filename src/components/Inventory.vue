@@ -10,6 +10,8 @@ export default {
       filterByType: ["", "AK", "AWP"],
       filterByCase: ["", "Revolution", "Prisma"],
       searchInput: '',
+      dialog: false,
+      selectedItem: {} as Item,
       caseItems: [
         {
           id: 0,
@@ -72,14 +74,23 @@ export default {
       selectedFilterByCase: null,
     }
   },
+  methods: {
+    openItemDetails(item) {
+      this.selectedItem = item
+      this.dialog = true
+    },
+    closeDialog() {
+      this.dialog = false;
+    }
+  },
   computed: {
     filteredItems() {
       return this.caseItems.filter(item => {
-        const nameMatch = !this.searchInput || item.skin.name.toLowerCase().includes(this.searchInput.toLowerCase());
-        const typeMatch = !this.selectedFilterByType || item.skin.weapon.name === this.selectedFilterByType;
-        const caseMatch = !this.selectedFilterByCase || item.case.some(weaponCase => weaponCase === this.selectedFilterByCase);
+        const nameMatch = !this.searchInput || item.skin.name.toLowerCase().includes(this.searchInput.toLowerCase())
+        const typeMatch = !this.selectedFilterByType || item.skin.weapon.name === this.selectedFilterByType
+        const caseMatch = !this.selectedFilterByCase || item.case.some(weaponCase => weaponCase === this.selectedFilterByCase)
 
-        return nameMatch && typeMatch && caseMatch;
+        return nameMatch && typeMatch && caseMatch
       }).sort((a, b) => {
         let comparison = 0;
 
@@ -90,12 +101,12 @@ export default {
         }
 
         if (this.selectedSortByDate === "Neu") {
-          comparison = b.date - a.date; // Newest to oldest
+          comparison = b.date - a.date
         } else if (this.selectedSortByDate === "Alt") {
-          comparison = a.date - b.date; // Oldest to newest
+          comparison = a.date - b.date
         }
 
-        return comparison;
+        return comparison
       });
     },
   }
@@ -135,7 +146,7 @@ export default {
   </div>
   <v-col>
     <v-row>
-      <v-col v-for="item in filteredItems" :key="item.id">
+      <v-col v-for="item in filteredItems" :key="item.id" @click="openItemDetails(item)">
         <v-card :style="{ borderRight: '8px solid ' + item.skin.rarity }">
           <img :src="item.skin.image" :alt="item.id" height="150" />
           <p>{{item.skin.name}}</p>
@@ -143,10 +154,30 @@ export default {
       </v-col>
     </v-row>
   </v-col>
+
+  <v-dialog v-model="dialog" max-width="600">
+    <v-card>
+      <v-card-title>Item:</v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col>
+            <v-img :src="this.selectedItem.image" alt="Opened Item" />
+          </v-col>
+          <v-col>
+            <div><strong>Name:</strong> {{ this.selectedItem.skin.name }}</div>
+            <div><strong>Seltenheit:</strong> {{ this.selectedItem.skin.rarity }}</div>
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn @click="closeDialog">Close</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>
-.v-card {
+.v-col .v-card {
   max-width: 160px;
   max-height: 200px;
   background-color: transparent;
