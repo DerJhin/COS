@@ -6,7 +6,6 @@ import FilteredSearchBox from "@/components/FilteredSearchBox.vue";
 
 <template>
   <div class="inventory">
-    <FilteredSearchBox />
     <Inventory />
   </div>
 </template>
@@ -14,5 +13,6 @@ import FilteredSearchBox from "@/components/FilteredSearchBox.vue";
 <style scoped>
 .inventory {
   display: grid;
+  min-width: 1000px;
 }
 </style>

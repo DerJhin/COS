@@ -4,11 +4,11 @@
     <img src="../../../icons/capy-logo-transparent.png" class="logo" alt="Case" />
   </div>
   <div>
-    <v-btn @click="openCase()" class="open-case-button">Open Case</v-btn>
+    <v-btn @click="openCase()" class="open-case-button">Öffnen</v-btn>
 
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
-        <v-card-title>Opened Item Information</v-card-title>
+        <v-card-title>Geöffnetes Item:</v-card-title>
         <v-card-text>
           <v-row>
             <v-col>
@@ -16,7 +16,7 @@
             </v-col>
             <v-col>
               <div><strong>Name:</strong> {{ openedItem.skin.name }}</div>
-              <div><strong>Type:</strong> {{ openedItem.skin.rarity }}</div>
+              <div><strong>Seltenheit:</strong> {{ openedItem.skin.rarity }}</div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -30,12 +30,13 @@
 
 <script lang="ts">
 import { CaseService } from "@/services/case.service";
+import {Item} from "@/interfaces/item";
 
 export default {
   props: ['caseName'],
   data() {
     return {
-      openedItem: null,
+      openedItem: {} as Item,
       dialog: false
     };
   },
