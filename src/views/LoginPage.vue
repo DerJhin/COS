@@ -112,4 +112,10 @@ export default {
 .v-input--horizontal + .v-input--horizontal{
   margin-top: 8px;
 }
+
+.v-container {
+  display: flex;
+  justify-content: center;
+  max-width: 30%;
+}
 </style>

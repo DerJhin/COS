@@ -87,7 +87,7 @@ const navigationNodes = [
           <v-card class="color">
             <v-toolbar
               color="outlined"
-              title="Add CC to Youre Account"
+              title="Add CC to your Account"
             ></v-toolbar>
             <v-card-text>
               <div class="text-h2 pa-12">test data</div>
