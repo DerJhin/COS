@@ -15,6 +15,7 @@ import Header from "@/components/Header.vue";
 <style scoped>
 .content {
   margin-top: 85px;
+  justify-content: center;
 }
 
 .v-layout {

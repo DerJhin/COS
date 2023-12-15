@@ -3,12 +3,20 @@ export default {
   data() {
     return {
       tab: null,
+      searchInput: '',
       friends: [
         {id: 1 , name: 'Test1', image: '../../../icons/capy-logo-transparent.png'},
         {id: 2 , name: 'Test2', image: '../../../icons/capy-logo-transparent.png'},
         {id: 3 , name: 'Test3', image: '../../../icons/capy-logo-transparent.png'},
-        {id: 4 , name: 'Test4', image: '../../../icons/capy-logo-transparent.png'},
+        {id: 4 , name: 'biebermann', image: '../../../icons/capy-logo-transparent.png'},
       ]
+    }
+  },
+  computed: {
+    filteredFriends() {
+      return this.friends.filter(friend => {
+        return friend.name.toLowerCase().includes(this.searchInput.toLowerCase());
+      });
     }
   }
 }
@@ -36,11 +44,14 @@ export default {
           <div class="search-bar">
             <v-text-field
                 label="Suchen..."
+                type="text"
+                v-model="searchInput"
             />
           </div>
           <v-list>
             <v-list-item
-              v-for="friend in friends"
+              v-for="friend in filteredFriends"
+              :key="friend.id"
               :title="friend.name"
               :prepend-avatar="friend.image"
             ></v-list-item>
