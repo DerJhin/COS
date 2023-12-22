@@ -182,6 +182,7 @@ a > .v-list-item {
 .profile-friends {
   display: flex;
   align-items: center;
+  gap: 1em;
 }
 
 .color {
