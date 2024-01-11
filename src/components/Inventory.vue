@@ -8,8 +8,8 @@ export default {
     return {
       sortByAlphabet: ["", "A-Z", "Z-A"],
       sortByDate: ["", "Neu", "Alt"],
-      filterByType: ["", "AK", "AWP"],
-      filterByCase: ["", "Revolution", "Prisma"],
+      filterByType: ["", "AK", "AWP", "MAG-7"],
+      filterByCase: ["", "Revolution"],
       searchInput: '',
       dialog: false,
       selectedItem: {} as Item,
@@ -27,20 +27,21 @@ export default {
     },
     closeDialog() {
       this.dialog = false;
-    }
-  },
-  computed: {
+    },
     async getInventory() {
       try {
-        this.openedItem = await CaseService.getInventory();
-        this.dialog = true; // Open the dialog when the item is successfully fetched
+        this.inventoryItems = await CaseService.getInventory();
       } catch (error) {
         console.error('Error fetching case data:', error);
       }
-    },
-
+    }
+  },
+  mounted() {
+    this.getInventory()
+  },
+  computed: {
     filteredItems() {
-      return this.inventoryItems.filter(item => {
+      return this.inventoryItems.items?.filter(item => {
         const nameMatch = !this.searchInput || item.skin.name.toLowerCase().includes(this.searchInput.toLowerCase())
         const typeMatch = !this.selectedFilterByType || item.skin.weapon.name === this.selectedFilterByType
         const caseMatch = !this.selectedFilterByCase || item.case.some(weaponCase => weaponCase === this.selectedFilterByCase)
@@ -56,7 +57,7 @@ export default {
         }
 
         if (this.selectedSortByDate === "Neu") {
-          comparison = b.date - a.date
+          comparison = b.date - a.date.toISOString()
         } else if (this.selectedSortByDate === "Alt") {
           comparison = a.date - b.date
         }
@@ -104,7 +105,7 @@ export default {
       <v-col v-for="item in filteredItems" :key="item.id" @click="openItemDetails(item)">
         <v-card :style="{ borderRight: '8px solid ' + item.skin.rarity }">
           <img :src="item.skin.image" :alt="item.id" height="150" />
-          <p>{{item.skin.name}}</p>
+          <p v-if="item.skin.name">{{item.skin.name}}</p>
         </v-card>
       </v-col>
     </v-row>
@@ -121,6 +122,9 @@ export default {
           <v-col>
             <div><strong>Name:</strong> {{ this.selectedItem.skin.name }}</div>
             <div><strong>Seltenheit:</strong> {{ this.selectedItem.skin.rarity }}</div>
+            <div><strong>Float:</strong> {{ this.selectedItem.floatString }}</div>
+            <div><strong>StatTrak:</strong> {{ this.selectedItem.statTrak }}</div>
+            <div><strong>Waffe:</strong> {{ this.selectedItem.skin.weapon.name }}</div>
           </v-col>
         </v-row>
       </v-card-text>

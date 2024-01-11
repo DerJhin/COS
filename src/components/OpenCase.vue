@@ -11,9 +11,9 @@
         <v-card-title>Geöffnetes Item:</v-card-title>
         <v-card-text>
           <v-row>
-            <v-col>
-              <v-img :src="openedItem.image" alt="Opened Item" />
-            </v-col>
+<!--            <v-col>-->
+<!--              <v-img v-if="openedItem?.image" :src="openedItem.image" alt="Opened Item" />-->
+<!--            </v-col>-->
             <v-col>
               <div><strong>Name:</strong> {{ openedItem.skin.name }}</div>
               <div><strong>Seltenheit:</strong> {{ openedItem.skin.rarity }}</div>
@@ -44,7 +44,7 @@ export default {
     async openCase() {
       try {
         this.openedItem = await CaseService.openCase(this.caseName);
-        this.dialog = true; // Open the dialog when the item is successfully fetched
+        this.dialog = true;
       } catch (error) {
         console.error('Error fetching case data:', error);
       }

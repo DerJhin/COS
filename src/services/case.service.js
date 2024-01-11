@@ -11,9 +11,9 @@ export const CaseService = {
     },
 
     async openCase(caseName) {
+        const userId = JSON.parse(localStorage.getItem('user')).id
         try {
-            const response = await axios.get('http://localhost:8080/case/openCase/' + caseName)
-            localStorage.setItem('user', JSON.stringify(response.data))
+            const response = await axios.get('http://localhost:8080/case/openCase/' + caseName + '/' + userId)
             return response.data
         } catch (error) {
             console.error('Error:', error)
@@ -41,12 +41,12 @@ export const CaseService = {
     },
 
     async getInventory() {
-        const userId = localStorage.getItem(userId)
+        const userId = JSON.parse(localStorage.getItem('user')).id
         try {
-            const response = await axios.get('http://localhost:8080/benutzer/' + userId + '/inventory')
-            return response.data
+            const response = await axios.get('http://localhost:8080/benutzer/' + userId + '/inventory');
+            return response.data;
         } catch (error) {
-            console.error('Error:', error)
+            console.error('Error:', error);
         }
     }
 }

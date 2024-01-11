@@ -6,7 +6,7 @@ export default {
   data() {
     return {
       caseData: {
-        name: "TestCase1",
+        name: "Revolution",
         img: "../../../icons/capy-logo-transparent.png",
         price: 100
       }
