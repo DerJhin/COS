@@ -1,4 +1,6 @@
 <script lang="ts">
+import {CaseService} from "@/services/case.service"
+
 export default {
   data() {
     return {
@@ -10,6 +12,18 @@ export default {
         {id: 3 , name: 'Test3', image: '../../../icons/capy-logo-transparent.png'},
         {id: 4 , name: 'biebermann', image: '../../../icons/capy-logo-transparent.png'},
       ]
+    }
+  },
+  mounted() {
+    this.getFriends()
+  },
+  methods: {
+    async getFriends() {
+      try {
+        this.caseData = await CaseService.getFriends();
+      } catch (error) {
+        console.error('Error fetching case data:', error);
+      }
     }
   },
   computed: {

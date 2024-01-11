@@ -1,14 +1,24 @@
 <script lang="ts">
 import Case from "@/components/Case.vue";
+import {CaseService} from "@/services/case.service"
 
 export default {
   components: {Case},
   data() {
     return {
-      caseData: {
-        name: "Revolution",
-        img: "../../../icons/capy-logo-transparent.png",
-        price: 100
+      caseData: []
+    }
+  },
+  mounted() {
+    this.getCases()
+  },
+  methods: {
+    async getCases() {
+      try {
+        this.caseData = await CaseService.getCases();
+        console.log(this.caseData)
+      } catch (error) {
+        console.error('Error fetching case data:', error);
       }
     }
   }

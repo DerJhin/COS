@@ -11,12 +11,15 @@
         <v-card-title>Geöffnetes Item:</v-card-title>
         <v-card-text>
           <v-row>
-<!--            <v-col>-->
-<!--              <v-img v-if="openedItem?.image" :src="openedItem.image" alt="Opened Item" />-->
-<!--            </v-col>-->
+            <v-col>
+              <v-img :src="openedItem.skin.image" alt="Opened Item" />
+            </v-col>
             <v-col>
               <div><strong>Name:</strong> {{ openedItem.skin.name }}</div>
               <div><strong>Seltenheit:</strong> {{ openedItem.skin.rarity }}</div>
+              <div><strong>Float:</strong> {{ openedItem.floatString }}</div>
+              <div><strong>StatTrak:</strong> {{ openedItem.statTrak }}</div>
+              <div><strong>Waffe:</strong> {{ openedItem.skin.weapon.name }}</div>
             </v-col>
           </v-row>
         </v-card-text>
