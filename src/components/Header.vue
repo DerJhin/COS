@@ -16,6 +16,8 @@ const navigationNodes = [
     label: 'Profil'
   }
 ]
+
+const user = JSON.parse(localStorage.getItem('user'))
 </script>
 
 <template>
@@ -81,7 +83,7 @@ const navigationNodes = [
             class="color"
             color="outlined"
             v-bind="props"
-          >700 CC</v-btn>
+          >{{ user ? user['balance'] : 0 }} CC</v-btn>
         </template>
         <template v-slot:default="{ isActive }">
           <v-card class="color">

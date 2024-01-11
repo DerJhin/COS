@@ -1,5 +1,6 @@
 <script lang="ts">
 import {Item} from "@/interfaces/item";
+import {CaseService} from "@/services/case.service"
 
 export default {
   props: ['caseName'],
@@ -12,62 +13,7 @@ export default {
       searchInput: '',
       dialog: false,
       selectedItem: {} as Item,
-      caseItems: [
-        {
-          id: 0,
-          skin: {
-            id: 1,
-            name: 'CDawg',
-            weapon: {
-              name: 'AWP'
-            },
-            hasPattern: false,
-            rarity: "red",
-            image: "../../../icons/capy-logo-transparent.png"
-          },
-          floatValue: 0.0005,
-          floatString: 'Minimal-Wear',
-          date: new Date('2023-12-03T10:15:25'),
-          statTrak: false,
-          case: ["Revolution", "Prisma"]
-        },
-        {
-          id: 1,
-          skin: {
-            id: 2,
-            name: 'Monke',
-            weapon: {
-              name: 'AK'
-            },
-            hasPattern: false,
-            rarity: "blue",
-            image: "../../../icons/capy-logo-transparent.png"
-          },
-          floatValue: 0.05168,
-          floatString: 'Factory New',
-          date: new Date('2023-12-04T10:15:25'),
-          statTrak: false,
-          case: ["Prisma"]
-        },
-        {
-          id: 2,
-          skin: {
-            id: 3,
-            name: 'Frog',
-            weapon: {
-              name: 'AK'
-            },
-            hasPattern: false,
-            rarity: "gold",
-            image: "../../../icons/capy-logo-transparent.png"
-          },
-          floatValue: 0.0005,
-          floatString: 'Factory-New',
-          date: new Date('2023-12-03T10:17:25'),
-          statTrak: false,
-          case: ["Revolution"]
-        }
-      ] as Item[],
+      inventoryItems: [] as Item[],
       selectedSortByAlphabet: null,
       selectedSortByDate: null,
       selectedFilterByType: null,
@@ -84,8 +30,17 @@ export default {
     }
   },
   computed: {
+    async getInventory() {
+      try {
+        this.openedItem = await CaseService.getInventory();
+        this.dialog = true; // Open the dialog when the item is successfully fetched
+      } catch (error) {
+        console.error('Error fetching case data:', error);
+      }
+    },
+
     filteredItems() {
-      return this.caseItems.filter(item => {
+      return this.inventoryItems.filter(item => {
         const nameMatch = !this.searchInput || item.skin.name.toLowerCase().includes(this.searchInput.toLowerCase())
         const typeMatch = !this.selectedFilterByType || item.skin.weapon.name === this.selectedFilterByType
         const caseMatch = !this.selectedFilterByCase || item.case.some(weaponCase => weaponCase === this.selectedFilterByCase)

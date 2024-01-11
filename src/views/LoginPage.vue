@@ -1,5 +1,6 @@
 <script lang="ts">
-import {AuthData} from "@/interfaces/authData";
+import { AuthData } from "@/interfaces/authData";
+import { CaseService } from "@/services/case.service";
 
 export default {
   data() {
@@ -13,6 +14,17 @@ export default {
       }
     };
   },
+  created() {
+    localStorage.clear()
+  },
+  computed: {
+    isLoginButtonDisabled() {
+      return !this.authData.username || !this.authData.password;
+    },
+    isRegisterButtonDisabled() {
+      return !this.authData.username || !this.authData.password || !this.authData.passwordConfirmation;
+    },
+  },
   watch: {
     tab: function () {
       this.authData = {}
@@ -24,13 +36,24 @@ export default {
   },
   methods: {
     async login() {
-      if (await this.$refs.form1.validate() === true) {
-        console.log('Anmelden...', this.authData);
-        this.$router.push("/")
+      try {
+        const user = await CaseService.login(this.authData);
+        if(user) this.$router.push("/");
+      } catch (error) {
+        console.error('Error logging in:', error);
       }
     },
-    register() {
-      console.log('Registrieren...', this.authData);
+    async register() {
+      const userData = {
+        username: this.authData.username,
+        password: this.authData.password
+      }
+      try {
+        const user = await CaseService.register(userData);
+        if(user) this.$router.push("/");
+      } catch (error) {
+        console.error('Error registering:', error);
+      }
     },
   },
 };
@@ -63,7 +86,7 @@ export default {
                       type="password"
                       :rules="[rules.required, rules.min]"
                   ></v-text-field>
-                  <v-btn type="submit" class="mt-2" color="secondary">Anmelden</v-btn>
+                  <v-btn :disabled="isLoginButtonDisabled" type="submit" class="mt-2" color="secondary">Anmelden</v-btn>
                 </v-form>
               </v-card-text>
             </v-window-item>
@@ -88,7 +111,7 @@ export default {
                       type="password"
                       :rules="[rules.required, rules.confirm]"
                   ></v-text-field>
-                  <v-btn type="submit" class="mt-2" color="secondary">Registrieren</v-btn>
+                  <v-btn :disabled="isRegisterButtonDisabled" type="submit" class="mt-2" color="secondary">Registrieren</v-btn>
                 </v-form>
               </v-card-text>
             </v-window-item>
@@ -109,7 +132,7 @@ export default {
   justify-content: center !important;
 }
 
-.v-input--horizontal + .v-input--horizontal{
+.v-input--horizontal + .v-input--horizontal {
   margin-top: 8px;
 }
 
