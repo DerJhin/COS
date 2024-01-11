@@ -102,9 +102,9 @@ export default {
   </div>
   <v-col>
     <v-row>
-      <v-col v-for="item in filteredItems" :key="item.id" @click="openItemDetails(item)">
+      <v-col v-for="item in filteredItems" :key="item.id" @click="openItemDetails(item)" class="item">
         <v-card :style="{ borderRight: '8px solid ' + item.skin.rarity }">
-          <img :src="item.skin.image" :alt="item.id" height="150" />
+          <img :src="item.skin.image" :alt="item.id" height="150" class="item-img"/>
           <p v-if="item.skin.name">{{item.skin.name}}</p>
         </v-card>
       </v-col>
@@ -113,11 +113,11 @@ export default {
 
   <v-dialog v-model="dialog" max-width="600">
     <v-card>
-      <v-card-title>Item:</v-card-title>
+      <v-card-title>Geöffnetes Item:</v-card-title>
       <v-card-text>
         <v-row>
           <v-col>
-            <v-img :src="this.selectedItem.image" alt="Opened Item" />
+            <v-img :src="this.selectedItem.skin.image" alt="Opened Item" />
           </v-col>
           <v-col>
             <div><strong>Name:</strong> {{ this.selectedItem.skin.name }}</div>
@@ -136,19 +136,25 @@ export default {
 </template>
 
 <style scoped>
-.v-col .v-card {
+.item .v-card {
   max-width: 160px;
   max-height: 200px;
-  background-color: transparent;
-}
-
-.v-col {
-  flex-grow: 0;
-  padding: 6px;
+  background-color: #69758b;
 }
 
 .v-row {
   justify-content: center;
+}
+
+.item-img {
+  width: 135px;
+  height: 125px;
+  margin-top: 10%;
+}
+
+.item {
+  flex-grow: 0;
+  padding: 6px;
 }
 
 .v-input {

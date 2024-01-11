@@ -3,7 +3,7 @@ import axios from "axios";
 export const CaseService = {
     async getCaseData(caseName) {
         try {
-            const response = await axios.get('http://localhost:8080/case/getSkins/' + caseName)
+            const response = await axios.get('http://localhost:8080/case/getSkinsForCase/' + caseName)
             return response.data
         } catch (error) {
             console.error('Error:', error)

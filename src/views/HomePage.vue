@@ -30,9 +30,7 @@ export default {
     <h2>Kostenlos</h2>
     <v-card>
       <div class="case-row">
-        <Case :case-data="this.caseData"/>
-        <Case :case-data="this.caseData"/>
-        <Case :case-data="this.caseData"/>
+        <Case :case-data="this.caseData[0]"/>
       </div>
     </v-card>
 
@@ -44,9 +42,7 @@ export default {
     <h2>Krasses Zeug</h2>
     <v-card>
       <div class="case-row">
-        <Case :case-data="this.caseData"/>
-        <Case :case-data="this.caseData"/>
-        <Case :case-data="this.caseData"/>
+        <Case :case-data="this.caseData[1]"/>
       </div>
     </v-card>
   </div>
