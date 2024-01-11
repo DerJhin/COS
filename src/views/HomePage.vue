@@ -16,7 +16,6 @@ export default {
     async getCases() {
       try {
         this.caseData = await CaseService.getCases();
-        console.log(this.caseData)
       } catch (error) {
         console.error('Error fetching case data:', error);
       }
@@ -27,22 +26,10 @@ export default {
 
 <template>
   <div>
-    <h2>Kostenlos</h2>
+    <h2>Kisten</h2>
     <v-card>
       <div class="case-row">
-        <Case :case-data="this.caseData[0]"/>
-      </div>
-    </v-card>
-
-    <v-divider
-        :thickness="3"
-        class="border-opacity-100"
-    ></v-divider>
-
-    <h2>Krasses Zeug</h2>
-    <v-card>
-      <div class="case-row">
-        <Case :case-data="this.caseData[1]"/>
+        <Case :case-data="caseData" v-for="caseData in this.caseData"/>
       </div>
     </v-card>
   </div>

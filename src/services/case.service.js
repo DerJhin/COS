@@ -68,5 +68,33 @@ export const CaseService = {
         } catch (error) {
             console.error('Error:', error);
         }
-    }
+    },
+
+    async searchFriend(username) {
+        try {
+            const response = await axios.get('http://localhost:8080/friends/search/' + username)
+            return response.data;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    },
+
+    async sendFriendRequest(friendId) {
+        const userId = JSON.parse(localStorage.getItem('user')).id
+        try {
+            const response = await axios.post('http://localhost:8080/friends/' + userId + '/' + friendId)
+            return response.data;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    },
+
+    async getProfile(username) {
+        try {
+            const response = await axios.post('http://localhost:8080/friends/search/' + username)
+            return response.data;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    },
 }
