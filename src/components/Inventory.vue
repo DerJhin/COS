@@ -10,6 +10,7 @@ export default {
       sortByDate: ["", "Neu", "Alt"],
       filterByType: ["", "AK", "AWP", "MAG-7"],
       filterByCase: ["", "Revolution"],
+      filterByStatTrak: ["", "true", "false"],
       searchInput: '',
       dialog: false,
       selectedItem: {} as Item,
@@ -18,6 +19,7 @@ export default {
       selectedSortByDate: null,
       selectedFilterByType: null,
       selectedFilterByCase: null,
+      selectedFilterByStatTrak: null
     }
   },
   methods: {
@@ -42,11 +44,12 @@ export default {
   computed: {
     filteredItems() {
       return this.inventoryItems.items?.filter(item => {
-        const nameMatch = !this.searchInput || item.skin.name.toLowerCase().includes(this.searchInput.toLowerCase())
-        const typeMatch = !this.selectedFilterByType || item.skin.weapon.name === this.selectedFilterByType
-        const caseMatch = !this.selectedFilterByCase || item.case.some(weaponCase => weaponCase === this.selectedFilterByCase)
+        const nameMatch = !this.searchInput || item.skin.name.toLowerCase().includes(this.searchInput.toLowerCase());
+        const typeMatch = !this.selectedFilterByType || item.skin.weapon.name === this.selectedFilterByType;
+        const caseMatch = !this.selectedFilterByCase || item.case.some(weaponCase => weaponCase === this.selectedFilterByCase);
+        const statTrakMatch = this.selectedFilterByStatTrak === "" || item.statTrak === (this.selectedFilterByStatTrak === "true");
 
-        return nameMatch && typeMatch && caseMatch
+        return nameMatch && typeMatch && caseMatch && statTrakMatch;
       }).sort((a, b) => {
         let comparison = 0;
 
@@ -57,12 +60,12 @@ export default {
         }
 
         if (this.selectedSortByDate === "Neu") {
-          comparison = b.date - a.date.toISOString()
+          comparison = b.date - a.date.toISOString();
         } else if (this.selectedSortByDate === "Alt") {
-          comparison = a.date - b.date
+          comparison = a.date - b.date;
         }
 
-        return comparison
+        return comparison;
       });
     },
   }
@@ -91,6 +94,11 @@ export default {
         :items="filterByCase"
         label="Aus Kiste:"
         v-model="selectedFilterByCase"
+    ></v-select>
+    <v-select
+        :items="filterByStatTrak"
+        label="StratTrak:"
+        v-model="selectedFilterByStatTrak"
     ></v-select>
   </div>
   <div class="search-bar">
@@ -122,14 +130,15 @@ export default {
           <v-col>
             <div><strong>Name:</strong> {{ this.selectedItem.skin.name }}</div>
             <div><strong>Seltenheit:</strong> {{ this.selectedItem.skin.rarity }}</div>
-            <div><strong>Float:</strong> {{ this.selectedItem.floatString }}</div>
+            <div><strong>Zustand:</strong> {{ this.selectedItem.floatString }}</div>
+            <div><strong>Float:</strong> {{ this.selectedItem.floatValue }}</div>
             <div><strong>StatTrak:</strong> {{ this.selectedItem.statTrak }}</div>
             <div><strong>Waffe:</strong> {{ this.selectedItem.skin.weapon.name }}</div>
           </v-col>
         </v-row>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="closeDialog">Close</v-btn>
+        <v-btn @click="closeDialog">Schließen</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

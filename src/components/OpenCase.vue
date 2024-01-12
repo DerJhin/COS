@@ -17,14 +17,15 @@
             <v-col>
               <div><strong>Name:</strong> {{ openedItem.skin.name }}</div>
               <div><strong>Seltenheit:</strong> {{ openedItem.skin.rarity }}</div>
-              <div><strong>Float:</strong> {{ openedItem.floatString }}</div>
+              <div><strong>Zustand:</strong> {{ openedItem.floatString }}</div>
+              <div><strong>Float:</strong> {{ openedItem.floatValue }}</div>
               <div><strong>StatTrak:</strong> {{ openedItem.statTrak }}</div>
               <div><strong>Waffe:</strong> {{ openedItem.skin.weapon.name }}</div>
             </v-col>
           </v-row>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="closeDialog">Close</v-btn>
+          <v-btn @click="closeDialog">Schließen</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

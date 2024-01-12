@@ -89,9 +89,10 @@ export const CaseService = {
         }
     },
 
-    async getProfile(username) {
+    async getProfile() {
+        const userId = JSON.parse(localStorage.getItem('user')).id
         try {
-            const response = await axios.post('http://localhost:8080/friends/search/' + username)
+            const response = await axios.get('http://localhost:8080/benutzer/profile/' + userId)
             return response.data;
         } catch (error) {
             console.error('Error:', error);

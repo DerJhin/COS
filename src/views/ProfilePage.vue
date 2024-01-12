@@ -1,12 +1,32 @@
 <script>
+import {CaseService} from "@/services/case.service";
 
+export default {
+  data() {
+    return {
+      profileData: {}
+    }
+  },
+  created() {
+    this.getProfileData()
+  },
+  methods: {
+    async getProfileData() {
+      try {
+        this.profileData = await CaseService.getProfile();
+      } catch (error) {
+        console.error('Error logging in:', error);
+      }
+    }
+  }
+}
 </script>
 
 <template>
   <v-container>
     <v-row>
       <v-col>
-        <h1 class="ueberschrift">User123456</h1>
+        <h1 class="ueberschrift">{{ profileData.username }}</h1>
       </v-col>
     </v-row>
     <v-row>
@@ -17,7 +37,6 @@
           alt="Profilbild"/>
       </v-col>
       <v-col class="abstand centerContent">
-        <p>Profil bearbeiten</p>
         <v-form>
           <v-text-field
             v-model="Anzeigename"
