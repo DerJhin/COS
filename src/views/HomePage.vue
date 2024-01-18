@@ -1,14 +1,23 @@
 <script lang="ts">
 import Case from "@/components/Case.vue";
+import {CaseService} from "@/services/case.service"
 
 export default {
   components: {Case},
   data() {
     return {
-      caseData: {
-        name: "TestCase1",
-        img: "../../../icons/capy-logo-transparent.png",
-        price: 100
+      caseData: []
+    }
+  },
+  mounted() {
+    this.getCases()
+  },
+  methods: {
+    async getCases() {
+      try {
+        this.caseData = await CaseService.getCases();
+      } catch (error) {
+        console.error('Error fetching case data:', error);
       }
     }
   }
@@ -17,26 +26,10 @@ export default {
 
 <template>
   <div>
-    <h2>Kostenlos</h2>
+    <h2>Kisten</h2>
     <v-card>
       <div class="case-row">
-        <Case :case-data="this.caseData"/>
-        <Case :case-data="this.caseData"/>
-        <Case :case-data="this.caseData"/>
-      </div>
-    </v-card>
-
-    <v-divider
-        :thickness="3"
-        class="border-opacity-100"
-    ></v-divider>
-
-    <h2>Krasses Zeug</h2>
-    <v-card>
-      <div class="case-row">
-        <Case :case-data="this.caseData"/>
-        <Case :case-data="this.caseData"/>
-        <Case :case-data="this.caseData"/>
+        <Case :case-data="caseData" v-for="caseData in this.caseData"/>
       </div>
     </v-card>
   </div>

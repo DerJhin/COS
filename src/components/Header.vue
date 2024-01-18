@@ -1,21 +1,37 @@
-<script setup lang="ts">
-
+<script lang="ts">
 import FriendsMenu from "@/components/FriendsMenu.vue";
 
-const navigationNodes = [
-  {
-    link: '/inventory',
-    label: 'Inventar'
+export default {
+  components: {FriendsMenu},
+  data() {
+    return {
+      navigationNodes: [
+        {
+          link: '/inventory',
+          label: 'Inventar'
+        },
+        {
+          link: '/requests',
+          label: 'Anfragen'
+        },
+        {
+          link: '/profile',
+          label: 'Profil'
+        }
+      ],
+
+      user: JSON.parse(localStorage.getItem('user'))
+    }
   },
-  {
-    link: '/requests',
-    label: 'Anfragen'
-  },
-  {
-    link: '/profile',
-    label: 'Profil'
+  methods: {
+    logout() {
+      localStorage.clear()
+      this.user = undefined
+      this.$router.push('/login')
+    }
   }
-]
+}
+
 </script>
 
 <template>
@@ -29,9 +45,9 @@ const navigationNodes = [
         />
       </router-link>
 
-      <router-link to="/market">
+      <router-link to="/market" v-if="user">
         <p class="market-label">
-          Tomatenmarkt
+          Markt
           <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
             <path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
           </svg>
@@ -45,7 +61,7 @@ const navigationNodes = [
         transition="dialog-top-transition"
         width="auto"
       >
-        <template v-slot:activator="{ props }">
+        <template v-slot:activator="{ props }" v-if="user">
           <v-btn
             class="color"
             color="outlined"
@@ -65,7 +81,7 @@ const navigationNodes = [
               <v-btn
                 variant="text"
                 @click="isActive.value = false"
-              >Close</v-btn>
+              >Schließen</v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -76,18 +92,18 @@ const navigationNodes = [
         position="right"
         width="auto"
       >
-        <template v-slot:activator="{ props }" class="cc-amount">
+        <template v-slot:activator="{ props }" class="cc-amount" v-if="user">
           <v-btn
-            class="color"
+              class="cc-button"
             color="outlined"
             v-bind="props"
-          >700 CC</v-btn>
+          >{{ user ? user['balance'] : 0 }} CC</v-btn>
         </template>
-        <template v-slot:default="{ isActive }">
-          <v-card class="color">
+        <template v-slot:default="{ isActive }" v-if="user">
+          <v-card>
             <v-toolbar
               color="outlined"
-              title="Add CC to your Account"
+              title="CC zum Account hinzufügen"
             ></v-toolbar>
             <v-card-text>
               <div class="text-h2 pa-12">test data</div>
@@ -96,18 +112,18 @@ const navigationNodes = [
               <v-btn
                 variant="text"
                 @click="isActive.value = false"
-              >Close</v-btn>
+              >Schließen</v-btn>
             </v-card-actions>
           </v-card>
         </template>
       </v-dialog>
 
-      <div class="text-center profile-friends">
+      <div class="text-center profile-friends" v-if="user">
         <v-menu>
           <template v-slot:activator="{ props }">
             <img
                 src="../../public/icons/capy-logo-transparent.png"
-                class="user-pic"
+                class="user-pic pointer"
                 v-bind="props"
                 alt="Profilbild"/>
           </template>
@@ -128,10 +144,12 @@ const navigationNodes = [
       </div>
 
         <svg
+            v-if="user"
             xmlns="http://www.w3.org/2000/svg"
             height="1.5em"
             viewBox="0 0 512 512"
-            class="logout"
+            class="logout pointer"
+            @click="logout()"
         >
           <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 192 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"/>
         </svg>
@@ -144,9 +162,12 @@ a > .v-list-item {
   color: black;
 }
 
+:deep(.v-toolbar__prepend) {
+  gap: 2em;
+}
+
 .market-label {
   font-weight: bold;
-  margin-left: 2em;
 }
 
 .v-app-bar.v-toolbar {
@@ -172,19 +193,23 @@ a > .v-list-item {
   font-weight: bold;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
+.cc-button {
+  margin-right: 25px;
+}
+
 .user-pic {
   height: 50px;
   width: 50px;
   border: 1px solid black;
-  margin-left: 25px;
 }
 
 .profile-friends {
   display: flex;
   align-items: center;
-}
-
-.color {
-    color: #ff317b;
+  gap: 1em;
 }
 </style>

@@ -1,5 +1,6 @@
 <script lang="ts">
 import {Item} from "@/interfaces/item";
+import {CaseService} from "@/services/case.service"
 
 export default {
   props: ['caseName'],
@@ -7,71 +8,18 @@ export default {
     return {
       sortByAlphabet: ["", "A-Z", "Z-A"],
       sortByDate: ["", "Neu", "Alt"],
-      filterByType: ["", "AK", "AWP"],
-      filterByCase: ["", "Revolution", "Prisma"],
+      filterByType: ["", "AK", "AWP", "MAG-7"],
+      filterByCase: ["", "Revolution"],
+      filterByStatTrak: ["", "true", "false"],
       searchInput: '',
       dialog: false,
       selectedItem: {} as Item,
-      caseItems: [
-        {
-          id: 0,
-          skin: {
-            id: 1,
-            name: 'CDawg',
-            weapon: {
-              name: 'AWP'
-            },
-            hasPattern: false,
-            rarity: "red",
-            image: "../../../icons/capy-logo-transparent.png"
-          },
-          floatValue: 0.0005,
-          floatString: 'Minimal-Wear',
-          date: new Date('2023-12-03T10:15:25'),
-          statTrak: false,
-          case: ["Revolution", "Prisma"]
-        },
-        {
-          id: 1,
-          skin: {
-            id: 2,
-            name: 'Monke',
-            weapon: {
-              name: 'AK'
-            },
-            hasPattern: false,
-            rarity: "blue",
-            image: "../../../icons/capy-logo-transparent.png"
-          },
-          floatValue: 0.05168,
-          floatString: 'Factory New',
-          date: new Date('2023-12-04T10:15:25'),
-          statTrak: false,
-          case: ["Prisma"]
-        },
-        {
-          id: 2,
-          skin: {
-            id: 3,
-            name: 'Frog',
-            weapon: {
-              name: 'AK'
-            },
-            hasPattern: false,
-            rarity: "gold",
-            image: "../../../icons/capy-logo-transparent.png"
-          },
-          floatValue: 0.0005,
-          floatString: 'Factory-New',
-          date: new Date('2023-12-03T10:17:25'),
-          statTrak: false,
-          case: ["Revolution"]
-        }
-      ] as Item[],
+      inventoryItems: [] as Item[],
       selectedSortByAlphabet: null,
       selectedSortByDate: null,
       selectedFilterByType: null,
       selectedFilterByCase: null,
+      selectedFilterByStatTrak: null
     }
   },
   methods: {
@@ -81,16 +29,27 @@ export default {
     },
     closeDialog() {
       this.dialog = false;
+    },
+    async getInventory() {
+      try {
+        this.inventoryItems = await CaseService.getInventory();
+      } catch (error) {
+        console.error('Error fetching case data:', error);
+      }
     }
+  },
+  mounted() {
+    this.getInventory()
   },
   computed: {
     filteredItems() {
-      return this.caseItems.filter(item => {
-        const nameMatch = !this.searchInput || item.skin.name.toLowerCase().includes(this.searchInput.toLowerCase())
-        const typeMatch = !this.selectedFilterByType || item.skin.weapon.name === this.selectedFilterByType
-        const caseMatch = !this.selectedFilterByCase || item.case.some(weaponCase => weaponCase === this.selectedFilterByCase)
+      return this.inventoryItems.items?.filter(item => {
+        const nameMatch = !this.searchInput || item.skin.name.toLowerCase().includes(this.searchInput.toLowerCase());
+        const typeMatch = !this.selectedFilterByType || item.skin.weapon.name === this.selectedFilterByType;
+        const caseMatch = !this.selectedFilterByCase || item.case.some(weaponCase => weaponCase === this.selectedFilterByCase);
+        const statTrakMatch = this.selectedFilterByStatTrak === "" || item.statTrak === (this.selectedFilterByStatTrak === "true");
 
-        return nameMatch && typeMatch && caseMatch
+        return nameMatch && typeMatch && caseMatch && statTrakMatch;
       }).sort((a, b) => {
         let comparison = 0;
 
@@ -101,12 +60,12 @@ export default {
         }
 
         if (this.selectedSortByDate === "Neu") {
-          comparison = b.date - a.date
+          comparison = b.date - a.date.toISOString();
         } else if (this.selectedSortByDate === "Alt") {
-          comparison = a.date - b.date
+          comparison = a.date - b.date;
         }
 
-        return comparison
+        return comparison;
       });
     },
   }
@@ -136,6 +95,11 @@ export default {
         label="Aus Kiste:"
         v-model="selectedFilterByCase"
     ></v-select>
+    <v-select
+        :items="filterByStatTrak"
+        label="StratTrak:"
+        v-model="selectedFilterByStatTrak"
+    ></v-select>
   </div>
   <div class="search-bar">
     <v-text-field
@@ -146,10 +110,10 @@ export default {
   </div>
   <v-col>
     <v-row>
-      <v-col v-for="item in filteredItems" :key="item.id" @click="openItemDetails(item)">
+      <v-col v-for="item in filteredItems" :key="item.id" @click="openItemDetails(item)" class="item">
         <v-card :style="{ borderRight: '8px solid ' + item.skin.rarity }">
-          <img :src="item.skin.image" :alt="item.id" height="150" />
-          <p>{{item.skin.name}}</p>
+          <img :src="item.skin.image" :alt="item.id" height="150" class="item-img"/>
+          <p v-if="item.skin.name">{{item.skin.name}}</p>
         </v-card>
       </v-col>
     </v-row>
@@ -157,39 +121,49 @@ export default {
 
   <v-dialog v-model="dialog" max-width="600">
     <v-card>
-      <v-card-title>Item:</v-card-title>
+      <v-card-title>Geöffnetes Item:</v-card-title>
       <v-card-text>
         <v-row>
           <v-col>
-            <v-img :src="this.selectedItem.image" alt="Opened Item" />
+            <v-img :src="this.selectedItem.skin.image" alt="Opened Item" />
           </v-col>
           <v-col>
             <div><strong>Name:</strong> {{ this.selectedItem.skin.name }}</div>
             <div><strong>Seltenheit:</strong> {{ this.selectedItem.skin.rarity }}</div>
+            <div><strong>Zustand:</strong> {{ this.selectedItem.floatString }}</div>
+            <div><strong>Float:</strong> {{ this.selectedItem.floatValue }}</div>
+            <div><strong>StatTrak:</strong> {{ this.selectedItem.statTrak }}</div>
+            <div><strong>Waffe:</strong> {{ this.selectedItem.skin.weapon.name }}</div>
           </v-col>
         </v-row>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="closeDialog">Close</v-btn>
+        <v-btn @click="closeDialog">Schließen</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <style scoped>
-.v-col .v-card {
+.item .v-card {
   max-width: 160px;
   max-height: 200px;
-  background-color: transparent;
-}
-
-.v-col {
-  flex-grow: 0;
-  padding: 6px;
+  background-color: #69758b;
 }
 
 .v-row {
   justify-content: center;
+}
+
+.item-img {
+  width: 135px;
+  height: 125px;
+  margin-top: 10%;
+}
+
+.item {
+  flex-grow: 0;
+  padding: 6px;
 }
 
 .v-input {

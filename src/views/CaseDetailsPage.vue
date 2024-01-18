@@ -4,7 +4,7 @@ import CaseItems from "@/components/CaseItems.vue";
 
 export default {
   components: {CaseItems, OpenCase},
-  mounted() {
+  created() {
     this.caseName = this.$route.params.name
   },
   data() {

@@ -12,16 +12,20 @@
         <v-card-text>
           <v-row>
             <v-col>
-              <v-img :src="openedItem.image" alt="Opened Item" />
+              <v-img :src="openedItem.skin.image" alt="Opened Item" />
             </v-col>
             <v-col>
               <div><strong>Name:</strong> {{ openedItem.skin.name }}</div>
               <div><strong>Seltenheit:</strong> {{ openedItem.skin.rarity }}</div>
+              <div><strong>Zustand:</strong> {{ openedItem.floatString }}</div>
+              <div><strong>Float:</strong> {{ openedItem.floatValue }}</div>
+              <div><strong>StatTrak:</strong> {{ openedItem.statTrak }}</div>
+              <div><strong>Waffe:</strong> {{ openedItem.skin.weapon.name }}</div>
             </v-col>
           </v-row>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="closeDialog">Close</v-btn>
+          <v-btn @click="closeDialog">Schließen</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -44,7 +48,7 @@ export default {
     async openCase() {
       try {
         this.openedItem = await CaseService.openCase(this.caseName);
-        this.dialog = true; // Open the dialog when the item is successfully fetched
+        this.dialog = true;
       } catch (error) {
         console.error('Error fetching case data:', error);
       }
